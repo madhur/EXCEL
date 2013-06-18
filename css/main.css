@@ -1,0 +1,21 @@
+ body
+        {
+            margin: 0;
+			 height: 100px;
+
+            font-family: verdana;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        #result
+        {
+		            width: 400px;
+            height: 400px;
+
+            margin-top: 20px;
+            width: 400px;
+            vertical-align: middle;
+            text-align: left;
+	    
+
+        }
