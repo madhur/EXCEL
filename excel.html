@@ -1,23 +1,57 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=Unicode" />
 		<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
 		<script type="text/javascript" src="js/jquery.SPServices-2013.01.js"></script>
-
+		<script src="js/markup.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 
 		<LINK REL=StyleSheet HREF="css/main.css" TYPE="text/css" MEDIA=screen>
+		
+		
+		 <style type="text/css" >
+          
+            
+        </style>
 
     </head>
     
-    <body>
+    <body id="main" onload="init()">
         
 
-		<div id="result">
-		
-		<a class="toggler" href="#div2">Click</a>
+		   <div id="mainContent">
+            <table style="border-style: none; padding: 0px; margin: 0px">
+              <tr>
+                <td style="border-style: none; table-layout: fixed; text-align: left; width: 50%;">
+                  <img src="images/graph.png" alt="Show/Hide Graph" onclick="showFlyout()" />
+                  <img src="images/refresh.png" alt="Refresh Data" onclick="reload_Page()" />
+                  <img src="images/web.png" alt="Open CodeProject" onclick="navCodeProject()" />
+                  
+                </td>
+                <td style="border-style: none; table-layout: fixed; text-align: right; width: 50%;">
+                  <img id="loadingimage" alt="Loading Image" src="images/ui-anim_basic_16x16.gif" />
+                  <img id="playImage" src="images/play.png" alt="Turn Auto-Refresh On" onclick="playpauseUpdates()" />
+                  <img id="pauseImage" src="images/pause.png" alt="Turn Auto-Refresh Off" onclick="playpauseUpdates()"  />
+                  <img id="helpImage" src="images/help.png" alt="CodeProject Gadget, By Dave Auld, V1.2"/>
+                </td>
+              </tr>
+            </table>
 
-		</div>
+				<table id="excelTable" style="border: 2px double #FF9900;">
+                              
+                    
+					<tr><td colspan="2" id="loadRepDate">No Data</td></tr>    
+                </table>
+
+
+			
+				<table style="border: 2px double #FF9900;">
+                              
+                    
+                <tr><td colspan="2" id="loadRepDate">No Data</td></tr>    
+                </table>
+           </div>
         
     </body>
 </html>

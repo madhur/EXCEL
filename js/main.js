@@ -18,79 +18,125 @@ var url='https://teams.aexp.com/sites/teamsitewendy/WASTE/_vti_bin/owssvr.dll?cm
 $().SPServices.defaults.webURL = "https://teams.aexp.com/sites/teamsitewendy/WASTE";  // URL of the target Web
 $().SPServices.defaults.listName = excelList;  // Name of the list for list 
 
+// Enable support of cross domain origin request
 jQuery.support.cors = true;
 
-
-
-	$(document).ready(function()
-	{ 
-	
-	$('a.toggler').bind('click', function (e) 
-	{
-  
-
-   jQuery("body").slideDown("slow");
+// Disable caching of AJAX responses - Stop IE reusing cache data for the same requests
+$.ajaxSetup({
+    cache: false
 });
-	
-	
-
-			jQuery.ajax(
-			{
-				url: url, 
-				type: "GET",
-				dataType: "xml",
-				complete: processResult,
-				contentType: "text/xml; charset=\"utf-8\"",
-				error: function (xhr, ajaxOptions, thrownError) 
-				{
-					// alert(xhr.status);
-					// alert(thrownError);
-				}
-			});
 
 
+// --------------------------------------------------------------------
+// Initialize the gadget.
+// --------------------------------------------------------------------
+function init() 
+{
+    // Enable Settings dialog for the gadget. 
+    // System.Gadget.settingsUI = "cpsettings.html";
 
-			$().SPServices(
-			{
-				operation: "GetListItems",
-				async: false,
-				listName: excelList,
-				CAMLViewFields: "<ViewFields><FieldRef Name='Title' /></ViewFields>",
-				
-				completefunc: function (xData, Status) 
-				{
-					// alert(Status);
-					$(xData.responseXML).SPFilterNode("z:row").each(function() 
-					{
-						 var liHtml = "<li>" + $(this).attr("ows_Title") + "</li>";
-						 $("#result").append(liHtml);
-					});
+    // Specify the Flyout root.
+    // System.Gadget.Flyout.file = "cprepgraph.html";
+    // System.Gadget.Flyout.show = false;
 
-               
-				}
-			});
-        
-    });
+    //Hide the Play image, as will start in Autoupdate
+    $("#playImage").hide();
+
+    reload_Page();
+
+    //kickoff the auto update timer
+    // setTimeout(function () { updateTick(); }, 1000);
+}
 
 
-	
+// -------------------------------------------------
+// Reload the page
+// -------------------------------------------------
+function reload_Page() 
+{
+    //Show the loading images
+    $("#loadingimage").show();
 
         
+    getEXCELData();
+        
+}	
 
+function  getEXCELData()	
+{
+			var myQuery = "<Query><Where><Eq><FieldRef Name='Project_x0020_Contact' /><Value Type='Integer'><UserID/></Value></Eq></Where></Query>";
 
-
-		
-		
 			
-	function processResult(xData, status) 
-    {
-        $(xData.responseXML).find("z\\:row").each(function() 
-		{
-            var liHtml = "<li>" + $(this).attr("ows_LinkTitle") + "</li>";
-            $("#result").append(liHtml);
-        });
-        
-    }
+			$().SPServices(
+					{
+						operation: "GetListItems",
+						async: false,
+						listName: excelList,
+						CAMLViewFields: "<ViewFields Properties='True'><FieldRef Name='Title' /><FieldRef Name='Project_x0020_Status' /><FieldRef Name='Project_x0020_Director' /><FieldRef Name='Project_x0020_Contact' /><FieldRef Name='Project_x0020_VP' /><FieldRef Name='Estimated_x0020_Savings' /></ViewFields>",
+						CAMLQuery: myQuery,
+						completefunc: function (xData, Status) 
+						{
+							// alert(Status);
+							var resJson=$(xData.responseXML).SPFilterNode("z:row").SPXmlToJson(
+							{ 
+							
+								  mapping: 
+								  {
+										 ows_ID: {mappedName: "ID", objectType: "Counter"},
+										 ows_Title: {mappedName: "Title", objectType: "Text"},
+										 ows_Created: {mappedName: "Created", objectType: "DateTime"}
+								  },   
+								   includeAllAttrs: true
+							});
+							
+							
+							//console.log(resJson);
+							var wrapper={objects:resJson};
+							//console.log(wrapper);
+							// var myJSONText = JSON.stringify(resJson);
+							//console.log(myJSONText);
+
+							// setEXCELData(resJson);
+							var template =  "{{objects}}<tr><td>{{Title}}</td><td>{{Estimated_x0020_Savings}}</td></tr> {{/objects}}";
+							
+							var result=Mark.up(template, wrapper);
+							
+							$("#excelTable").html(result);
+							//console.log(result);
+							
+					   
+						}
+					});
+}
+
+
+
+function setEXCELData(resJson)
+{
+
+	
+
+
+
+
+
+
+
+}
+
+
+Number.prototype.formatMoney = function(c, d, t){
+var n = this, 
+    c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = d == undefined ? "." : d, 
+    t = t == undefined ? "," : t, 
+    s = n < 0 ? "-" : "", 
+    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+
+	
 
 
 
