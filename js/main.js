@@ -55,12 +55,19 @@ function init()
 function reload_Page() 
 {
     //Show the loading images
+<<<<<<< HEAD
    
 	 $("#loadingimage").show();
         
     getEXCELData();
 	
 	 $("#loadingimage").hide();
+=======
+    $("#loadingimage").show();
+
+        
+    getEXCELData();
+>>>>>>> 79592ae4f26ef390160a19b1aa7976e636e0e375
         
 }	
 
@@ -99,7 +106,11 @@ function  getEXCELData()
 							//console.log(myJSONText);
 
 							// setEXCELData(resJson);
+<<<<<<< HEAD
 							var template =  "{{objects}}<tr><td class='title'>{{Title}}</td><td class='amount'>$ {{Estimated_x0020_Savings | number | formatMoney  }}</td></tr> {{/objects}}";
+=======
+							var template =  "{{objects}}<tr><td>{{Title}}</td><td>{{Estimated_x0020_Savings}}</td></tr> {{/objects}}";
+>>>>>>> 79592ae4f26ef390160a19b1aa7976e636e0e375
 							
 							var result=Mark.up(template, wrapper);
 							
@@ -109,9 +120,12 @@ function  getEXCELData()
 					   
 						}
 					});
+<<<<<<< HEAD
 					
 					
 					
+=======
+>>>>>>> 79592ae4f26ef390160a19b1aa7976e636e0e375
 }
 
 
@@ -129,8 +143,14 @@ function setEXCELData(resJson)
 
 }
 
+<<<<<<< HEAD
 Mark.pipes.formatMoney = function(number){
 var n = number, 
+=======
+
+Number.prototype.formatMoney = function(c, d, t){
+var n = this, 
+>>>>>>> 79592ae4f26ef390160a19b1aa7976e636e0e375
     c = isNaN(c = Math.abs(c)) ? 2 : c, 
     d = d == undefined ? "." : d, 
     t = t == undefined ? "," : t, 
@@ -140,3 +160,10 @@ var n = number,
    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
 
+<<<<<<< HEAD
+=======
+	
+
+
+
+>>>>>>> 79592ae4f26ef390160a19b1aa7976e636e0e375
