@@ -99,7 +99,7 @@ function  getEXCELData()
 							//console.log(myJSONText);
 
 							// setEXCELData(resJson);
-							var template =  "{{objects}}<tr><td>{{Title}}</td><td>{{Estimated_x0020_Savings}}</td></tr> {{/objects}}";
+							var template =  "{{objects}}<tr><td class='title'>{{Title}}</td><td class='amount'>$ {{Estimated_x0020_Savings | number | formatMoney  }}</td></tr> {{/objects}}";
 							
 							var result=Mark.up(template, wrapper);
 							
@@ -129,9 +129,8 @@ function setEXCELData(resJson)
 
 }
 
-
-Number.prototype.formatMoney = function(c, d, t){
-var n = this, 
+Mark.pipes.formatMoney = function(number){
+var n = number, 
     c = isNaN(c = Math.abs(c)) ? 2 : c, 
     d = d == undefined ? "." : d, 
     t = t == undefined ? "," : t, 
@@ -140,8 +139,4 @@ var n = this,
     j = (j = i.length) > 3 ? j % 3 : 0;
    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
-
-	
-
-
 
